@@ -1,17 +1,17 @@
 {
-    "name": "litipk/flysystem-fallback-adapter",
+    "name": "jenszahner/flysystem-fallback-adapter",
     "description": "Flysystem adapter for fallback filesystems",
     "license": "MIT",
     "authors": [
         {
-            "name": "Andrés Correa Casablanca",
-            "email": "castarco@litipk.com"
+            "name": "Jens Zahner",
+            "email": "github+flysystem-adapter@zahner.mail"
         }
     ],
     "support": {
-        "email": "castarco@litipk.com",
-        "issues": "http://github.com/Litipk/flysystem-fallback-adapter/issues",
-        "source": "http://github.com/Litipk/flysystem-fallback-adapter"
+        "email": "github+flysystem-adapter@zahner.mail",
+        "issues": "http://github.com/jenszahner/flysystem-fallback-adapter/issues",
+        "source": "http://github.com/jenszahner/flysystem-fallback-adapter"
     },
     "require": {
         "php": ">=5.4.0",
