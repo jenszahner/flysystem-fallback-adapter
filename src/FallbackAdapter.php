@@ -80,7 +80,7 @@ class FallbackAdapter implements AdapterInterface
     {
         // This is done to allow "append" mode in the underlying main adapter
         if (!$this->mainAdapter->has($path) && $this->fallback->has($path)) {
-            $this->portFromFallback($path, $path);
+            $this->portFromFallback($path, $path,$config);
         }
 
         return $this->mainAdapter->update($path, $contents, $config);
@@ -344,15 +344,19 @@ class FallbackAdapter implements AdapterInterface
      * @param $path
      * @return boolean
      */
-    private function portFromFallback($path, $newpath)
+    private function portFromFallback($path, $newpath,$config = null)
     {
+        if ($config==null) {
+            $config = new Config();
+        }
+        
         $buffer = $this->fallback->readStream($path);
 
         if (false === $buffer) {
             return false;
         }
 
-        $result = $this->mainAdapter->writeStream($newpath, $buffer['stream'], new Config());
+        $result = $this->mainAdapter->writeStream($newpath, $buffer['stream'], $config);
 
         if (is_resource($buffer['stream'])) {
             fclose($buffer['stream']);
