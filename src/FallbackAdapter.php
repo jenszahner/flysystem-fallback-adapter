@@ -229,6 +229,13 @@ class FallbackAdapter implements AdapterInterface
 
         if (false !== $result && $this->forceCopyOnMain) {
             $this->mainAdapter->write($path, $result['contents'], new Config());
+            $visibility = $this->fallback->getVisibility($path);
+            if ($visibility === AdapterInterface::VISIBILITY_PUBLIC) {
+                $this->mainAdapter->setVisibility($path, AdapterInterface::VISIBILITY_PUBLIC);
+            }
+            else if ($visibility === AdapterInterface::VISIBILITY_PRIVATE) {
+                $this->mainAdapter->setVisibility($path, AdapterInterface::VISIBILITY_PRIVATE);
+            }
         }
 
         return $result;
@@ -251,6 +258,13 @@ class FallbackAdapter implements AdapterInterface
 
         if (false !== $result && $this->forceCopyOnMain) {
             $this->writeStream($path, $result['stream'], new Config());
+            $visibility = $this->fallback->getVisibility($path);
+            if ($visibility === AdapterInterface::VISIBILITY_PUBLIC) {
+                $this->mainAdapter->setVisibility($path, AdapterInterface::VISIBILITY_PUBLIC);
+            }
+            else if ($visibility === AdapterInterface::VISIBILITY_PRIVATE) {
+                $this->mainAdapter->setVisibility($path, AdapterInterface::VISIBILITY_PRIVATE);
+            }
         }
 
         return $result;
@@ -344,7 +358,7 @@ class FallbackAdapter implements AdapterInterface
      * @param $path
      * @return boolean
      */
-    private function portFromFallback($path, $newpath,$config = null)
+    private function portFromFallback($path, $newpath)
     {
         if ($config==null) {
             $config = new Config();
@@ -356,8 +370,16 @@ class FallbackAdapter implements AdapterInterface
             return false;
         }
 
-        $result = $this->mainAdapter->writeStream($newpath, $buffer['stream'], $config);
+        $result = $this->mainAdapter->writeStream($newpath, $buffer['stream'], new Config() );
 
+        $visibility = $this->fallback->getVisibility($path);
+        if ($visibility === AdapterInterface::VISIBILITY_PUBLIC) {
+            $this->mainAdapter->setVisibility($newpath, AdapterInterface::VISIBILITY_PUBLIC);
+        }
+        else if ($visibility === AdapterInterface::VISIBILITY_PRIVATE) {
+            $this->mainAdapter->setVisibility($newpath, AdapterInterface::VISIBILITY_PRIVATE);
+        }
+        
         if (is_resource($buffer['stream'])) {
             fclose($buffer['stream']);
         }
